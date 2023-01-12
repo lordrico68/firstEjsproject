@@ -1,0 +1,171 @@
+Contents
+1. Introduction to ejs
+2. Passing data to ejs
+3. if,else in ejs
+4. loop in ejs
+5. layout in ejs
+6. styling
+7. deploy our app to cyclic
+
+
+what is Template Engine or Language?
+A template engine enables you to use static template files to your application. At runtime, the
+template engine replaces variables in a template file with actual value, add transform the template 
+into an HTML file sent to the client. This approach makes it easier to design an HTML page
+
+- the below is a staic data of three different people rendered statically
+         index.html
+         ------------------------------       ------------------------------       ----------------------------
+         |<p>Name: Karim</p>          |        |<p>Name: Rahim</p>         |       |<p>Name: Pinky</p>        |
+         |<p>Profession: Student</p>  |        |<p>Profession: Teacher</p> |       |<p>Profession: Doctor</p> |
+         ------------------------------       ------------------------------       ----------------------------
+-for use to render more name and profession we need to use dynamic technology such as EJS like this
+            <h1>Name: <%=name%>
+            <p>Profession: <%=profession%>
+
+the above tags is an Ejs express tags which can render dynamic content on the html page.
+
+The purpose of Templating Engine: is to render dynamic content on the html page.
+
+EJS (Embedded Javascript Templating Language) is one of the most popular template engine for javascript. As the name suggest, it lets us to embed javascript code in a template that is then used to generate html
+
+Type of Template Language
+-EJS
+-handlebars
+-pug and etc
+
+Ejs allow us to run and write plain javascript in Html page.
+Ejs is very simple, lightweight, fast compare to templatiing language.
+Ejs is founded in Feburary, 2011.
+
+How to use Ejs
+install: npm install ejs
+app.set('view engine', 'ejs'); //this is how to setup ejs inside backend server
+
+View -> index.js // create a folder named views to hold all pages you want to render in frontend.
+res.render('index',{}); // this is how to send data to frontend from backend server
+
+A package.json file is a file used to manage our dependencies, thirdparty libraries and also used in the execution of our codes
+
+Let setup project in vscode
+- create folder firstEjsproject
+- open vscode terminaland type this command to generate package.json file
+PS C:\firstEjsproject> npm init
+PS C:\firstEjsproject> npm init -y(to generate a package.json file)
+PS C:\firstEjsproject> npm install express@4.18.2 (to build the back end server)
+-let create index.js inside the root folder as the entry point to setup the backend server
+
+-install nodemon to watch out for changes in our backend server like this
+PS C:\firstEjsproject> npm i -D nodemon@2.0.20
+- let use nodemon inside package.json scripts object from this
+"scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+   },
+to this
+"scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+- let setup backend basic server structure in index.js file
+// basic server structure
+const express = require('express'); //is the way to import dependency or package or third party 
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+// sending a response to frontend or clientside
+app.get('/',(req, res)=>{
+    res.send('Welcome to EJS');
+});
+
+app.listen(PORT, ()=>{
+    console.log(`server is running at http://localhost:${PORT}`);
+});
+- let startup our backend server like this 
+PS C:\firstEjsproject> npm start
+OR
+- startup your backend server for local development like this
+PS C:\firstEjsproject> npm run dev
+- let click on this url: -> server is running at http://localhost:3001
+it returns Welcome to EJS
+
+- let create views folder inside the root folder to store all our ejs file
+- create index.ejs file inside views folder to write our dynamic html tags or elements
+- let generate our html basic structure inside index.ejs file
+
+- let install ejs package like this
+PS C:\firstEjsproject> npm install ejs@3.1.8
+- let use the ejs right after the PORT like this
+- let render the content from views/index.ejs on the browser by replace this
+
+
+
+
+- we want 
+<title>Document</title>
+to this
+<title><%=pageTitle %></title>
+- back to the index.js file to add the dynamic value onto app.get() api or route like this
+app.get('/',(req, res)=>{
+    res.status(200).render('index', {pageTitle: 'Home Page'});
+});
+- let copy and paste the content of index.ejs to contact.ejs
+- let create route or app for contact.ejs file inside the index.js backend server like this
+app.get('/contact',(req, res)=>{
+    res.status(200).render('contact', {pageTitle: 'Contact Page'});
+});
+- let 
+
+let pINames = ['c', 'c++'];
+
+
+app.get('/',(req, res)=>{
+    res.status(200).render('index', {pageTitle: 'Home Page', proNames: pINames});
+});
+
+
+<main>
+        <ul>
+            <li><%= proNames[0] %></li>
+            <li><%= proNames[1] %></li>
+        </ul>
+    </main>
+
+
+
+<main>
+        <ul>
+                <% if(proNames.length > 0){ %>
+                <li><%= proNames[0] %></li>
+                <li><%= proNames[1] %></li>
+                <% }else{%>
+                <p>No data available</p> 
+                <% } %>
+        </ul>
+    </main>
+
+- let add more elements onto proNames inside the backend server
+let pINames = ['c', 'c++', 'java', 'python'];
+with the above we need to use for loop to read the content of the array
+<main>
+        <ul>
+            <% for(let i=0; i < proNames.length; i++){ %>
+            <li><%= proNames[i] %></li>
+            <% } %>
+        </ul>
+    </main>
+- let create a form tags to add a dynamic element or item onto proNames array of string inside the  
+backend server like this
+<form action="/" method="post">
+            <input type="text" placeholder="enter a name of programming language" 
+            name="pIName"
+            >
+            <button type="submit">Add Data</button>
+        </form>
+- let add css to style our view files by create public/css/style.css
+
+
+
+app.use(express.static('public'));
+- let add the external style sheet onto the index.ejs
